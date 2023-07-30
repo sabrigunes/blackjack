@@ -1,5 +1,6 @@
 package com.sabrigunes.games.blackjack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -7,8 +8,8 @@ import java.util.Scanner;
 public class Blackjack {
     private static int dealerScore;
     private static int playerScore;
-    private static Card[] dealerCards; // TODO: Use ArrayList.
-    private static Card[] playerCards; // TODO: Use ArrayList.
+    private static ArrayList<Card> dealerCards = new ArrayList<>();
+    private static ArrayList<Card> playerCards = new ArrayList<>();
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -54,17 +55,23 @@ public class Blackjack {
         int playerSum = Card.getCardSum(playerCards);
         int dealerSum = Card.getCardSum(dealerCards);
 
-        if (playerSum < dealerSum) {
+        if (playerSum < dealerSum && dealerSum <= 21 || (playerSum > 21 && dealerSum <= 21)) {
             System.out.println("Eli krupiyer kazandı.");
             ++dealerScore;
-        } else if (playerSum == dealerSum)
+        } else if (playerSum == dealerSum || (playerSum > 21 && dealerSum > 21))
             System.out.println("El berabere bitti.");
-        else {
+        else if (dealerSum < playerSum && playerSum <= 21 || (dealerSum > 21 && playerSum <= 21)){
             System.out.println("Eli siz kazandınız.");
             ++playerScore;
         }
 
         System.out.printf("Skor Durumu%nSiz      : %d%nKrupiyer : %d%n%n", playerScore, dealerScore);
+        resetStats();
+    }
+
+    private static void resetStats(){
+        playerCards = new ArrayList<Card>();
+        dealerCards = new ArrayList<Card>();
     }
 
     private static void workForDealer() {
@@ -82,17 +89,19 @@ public class Blackjack {
         return Card.getCardSum(playerCards) >= 21;
     }
 
-    private static Card[] drawnNewCard(Card[] cards, String msg) {
+    private static ArrayList<Card> drawnNewCard(ArrayList<Card> cards, String msg) {
         System.out.println(msg);
-        Card[] newCards = Arrays.copyOf(cards, cards.length + 1);
-        newCards[newCards.length - 1] = Card.getRandomCard();
-        return newCards;
+        cards.add(Card.getRandomCard());
+        return cards;
     }
 
 
     private static void startTurn() {
-        dealerCards = new Card[]{Card.getRandomCard(), Card.getRandomCard()};
-        playerCards = new Card[]{Card.getRandomCard(), Card.getRandomCard()};
+        dealerCards.add(Card.getRandomCard());
+        dealerCards.add(Card.getRandomCard());
+        playerCards.add(Card.getRandomCard());
+        playerCards.add(Card.getRandomCard());
+
         Printer.printTurn(dealerCards, playerCards, false);
     }
 

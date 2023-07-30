@@ -1,5 +1,7 @@
 package com.sabrigunes.games.blackjack;
 
+import java.util.ArrayList;
+
 class Printer {
     private Printer() {
     }
@@ -22,21 +24,21 @@ class Printer {
         System.out.println(getCard(cardType, cardSymbol));
     }
 
-    public static void printlnCards(Card[] cards) {
+    public static void printlnCards(ArrayList<Card> cards) {
         System.out.println(getCards(cards));
     }
 
-    public static void printlnCards(String prefix, Card[] cards) {
+    public static void printlnCards(String prefix, ArrayList<Card> cards) {
         printlnCards(prefix, cards, false);
     }
 
-    public static void printlnCards(String prefix, Card[] cards, boolean hideDealerCards) {
+    public static void printlnCards(String prefix, ArrayList<Card> cards, boolean hideDealerCards) {
         System.out.println(prefix);
         System.out.println(getCards(cards, hideDealerCards));
     }
 
 
-    public static void printTurn(Card[] dealerCards, Card[] playerCards, boolean isPrintDealerScore) {
+    public static void printTurn(ArrayList<Card> dealerCards, ArrayList<Card> playerCards, boolean isPrintDealerScore) {
         Printer.printlnCards("Krupiyerin Kartları", dealerCards, !isPrintDealerScore);
         if (isPrintDealerScore)
             System.out.printf("Krupiyerin Elindeki Kartlar : %s%n", Card.getCardSum(dealerCards));
@@ -46,31 +48,31 @@ class Printer {
         System.out.printf("Elinizdeki Kartlar : %s%n", Card.getCardsSumForPrint(playerCards));
     }
 
-    public static void printTurn(Card[] dealerCards, Card[] playerCards) {
+    public static void printTurn(ArrayList<Card> dealerCards, ArrayList<Card> playerCards) {
         printTurn(dealerCards, playerCards, false);
     }
 
-    public static String getCards(Card[] cards) {
+    public static String getCards(ArrayList<Card> cards) {
         return getCards(cards, false);
     }
 
-    public static String getCards(Card[] cards, boolean hideDealerCards) {
+    public static String getCards(ArrayList<Card> cards, boolean hideDealerCards) {
         String s = "";
-        s += getFirstRow(cards.length);
+        s += getFirstRow(cards.size());
         s += getSecondRow(cards, hideDealerCards);
         s += getThirdRow(cards, hideDealerCards);
         s += getFourthRow(cards, hideDealerCards);
-        s += getLastRow(cards.length);
+        s += getLastRow(cards.size());
         return s;
     }
 
 
-    public static String getFirstRow(int len) {
+    private static String getFirstRow(int len) {
         return "┌───────┐   ".repeat(len) + "\n";
     }
 
 
-    public static String getSecondRow(Card[] cards, boolean hideDealerCards) {
+    private static String getSecondRow(ArrayList<Card> cards, boolean hideDealerCards) {
         StringBuilder s = new StringBuilder();
         for (Card card : cards) {
             if (hideDealerCards)
@@ -82,7 +84,7 @@ class Printer {
         return s + "\n";
     }
 
-    public static String getThirdRow(Card[] cards, boolean hideDealerCards) {
+    private static String getThirdRow(ArrayList<Card> cards, boolean hideDealerCards) {
         StringBuilder s = new StringBuilder();
         for (Card card : cards) {
             if (hideDealerCards)
@@ -94,7 +96,7 @@ class Printer {
         return s + "\n";
     }
 
-    public static String getFourthRow(Card[] cards, boolean hideDealerCards) {
+    private static String getFourthRow(ArrayList<Card> cards, boolean hideDealerCards) {
         StringBuilder s = new StringBuilder();
         for (Card card : cards) {
             if (hideDealerCards)
@@ -105,7 +107,7 @@ class Printer {
         return s + "\n";
     }
 
-    public static String getLastRow(int len) {
+    private static String getLastRow(int len) {
         return "└───────┘   ".repeat(len);
     }
 

@@ -1,16 +1,12 @@
 package com.sabrigunes.games.blackjack;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 class Card {
-    public static final char SPADES = '\u2667';
-    public static final char HEARTS = '\u2661';
-    public static final char DIAMOND = '\u2662';
-    public static final char CLUBS = '\u2664';
+    private static final boolean[] ms_cards = new boolean[52];
+    // order: 13 cards clubs(index:0-12)    13 cards diamond(index:13-25)   13 cards hearts(index:26-38)   13 cards spades(index:39-51)
 
-    public static final String[] TYPES = {"CLUBS", "DIAMOND", "HEARTS", "SPADES"};
-    public static final char[] SYMBOLS = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
-    private static boolean[] ms_cards = new boolean[52]; // order asc: clubs-13   diamond-13   hearts-13   spades-13
     private static final Random random = new Random();
 
 
@@ -23,26 +19,26 @@ class Card {
         this.symbol = symbol;
     }
 
-    public int getIndex() {
+    private int getIndex() {
         return type.ordinal() * 13 + symbol.ordinal();
     }
 
-    public static boolean isAvailable(int index) {
+    private static boolean isAvailable(int index) {
         return !ms_cards[index];
     }
 
-    public static void setNotAvailable(int index) {
+    private static void setNotAvailable(int index) {
         ms_cards[index] = true;
     }
 
-    public static int getCardSum(Card[] cards) {
+    public static int getCardSum(ArrayList<Card> cards) {
         int sum = 0;
         for (Card card : cards)
             sum += card.symbol.value;
         return sum;
     }
 
-    public static String getCardsSumForPrint(Card[] cards) {
+    public static String getCardsSumForPrint(ArrayList<Card> cards) {
         int sum = 0;
         boolean flag = false;
         for (Card card : cards) {
@@ -61,7 +57,7 @@ class Card {
             Symbol symbol = Symbol.values()[random.nextInt(13)];
             card = new Card(type, symbol);
             int index = card.getIndex();
-            if(Card.isAvailable(index)){
+            if (Card.isAvailable(index)) {
                 flag = false;
                 Card.setNotAvailable(index);
             }
